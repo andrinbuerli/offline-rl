@@ -1,0 +1,28 @@
+seed: 42
+dataset:
+  id: pointmaze_open_v3/random-v0
+  env_id: PointMaze_Open-v3
+
+model:
+  encoder_layers: [256, 256]
+  activation_class: "relu"
+
+  temperature: 0.1
+  value_loss_coef: 0.9
+  expectile: 0.7
+
+  obs_dim: 6
+  action_dim: 2
+
+train:
+  device: cuda
+  epochs: 100
+  batch_size: 256
+  lr: 3.0e-4
+  gamma: 0.99
+  log_every: 10
+
+  max_episode_steps: 100
+
+logging:
+  mode: "online"

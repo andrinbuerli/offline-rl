@@ -3,4 +3,4 @@ env_id: "PointMaze_Open-v3"
 total_steps: 1000
 max_steps_per_episode: 100
 algorithm_name: random
-dataset_id: "pointmaze_open_v3/random-v0"
+dataset_id: pointmaze_open_v3/random-v0

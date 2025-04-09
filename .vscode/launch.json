@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "generate dataset",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/generate_dataset.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--config-name=random.yaml",
+            ],
+        },
+        {
+            "name": "train iql",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/train_iql.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--config-name=iql_random.yaml",
+                "++logging.mode=offline"
+            ],
+        },
+    ]
+}

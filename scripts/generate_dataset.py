@@ -49,6 +49,7 @@ def main(cfg: DictConfig):
                 break
 
     dataset = env.create_dataset(
+        eval_env=env,
         dataset_id=cfg.dataset_id,
         algorithm_name=cfg.algorithm_name,
     )

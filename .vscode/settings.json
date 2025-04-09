@@ -1,0 +1,19 @@
+{
+    "pylint.args": [
+        "--disable=W1203", // Use %s formatting in logging functions
+        "--disable=W0107", // Unnecessary pass statement
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "python.languageServer": "Pylance",
+    "editor.formatOnSave": true,
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+}

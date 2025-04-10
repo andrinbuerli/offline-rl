@@ -1,0 +1,4 @@
+id: "PointMaze_Open-v3"
+max_steps_per_episode: 500
+continuing_task: true
+reset_target: true

@@ -1,0 +1,8 @@
+defaults:
+  - env: pointmaze_open
+  - dataset: random100k
+  - model: dense_iql
+  - train: default
+  - logging: wandb
+
+seed: 42

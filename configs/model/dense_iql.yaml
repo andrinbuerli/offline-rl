@@ -1,0 +1,8 @@
+device: cuda
+
+encoder_layers: [256, 256]
+activation_class: "relu"
+
+temperature: 10.0
+expectile: 0.99
+gamma: 0.99

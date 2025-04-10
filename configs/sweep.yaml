@@ -1,0 +1,57 @@
+project: offline-rl
+program: scripts/train.py # or your script
+method: bayes
+metric:
+  name: eval_reward
+  goal: maximize
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - --config-name=train.yaml
+  - ${args_no_hyphens}
+
+parameters:
+  train.lr:
+    distribution: log_uniform_values
+    min: 1e-5
+    max: 1e-2
+  train.weight_decay:
+    distribution: log_uniform_values
+    min: 1e-5
+    max: 1e-2
+
+  train.batch_size:
+    values: [256, 512, 1024, 2048]
+
+  train.grad_norm_clip:
+    values: [0.1, 1.0, 10.0, 100.0, 1000.0]
+
+  train.use_scheduler:
+    values: [true, false]
+
+  train.store_model:
+    value: false
+
+  model.encoder_layers:
+    values:
+      - [128, 128]
+      - [256, 256]
+      - [512, 512]
+      - [1024, 1024]
+
+  model.temperature:
+    distribution: log_uniform_values
+    min: 1e2
+    max: 1e4
+
+  model.expectile:
+    distribution: uniform
+    min: 0.5
+    max: 0.99
+
+  model.gamma:
+    distribution: log_uniform_values
+    min: 0.9
+    max: 0.9999

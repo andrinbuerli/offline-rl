@@ -1,0 +1,4 @@
+defaults:
+  - env: pointmaze_open
+  - dataset: random100k
+seed: 42

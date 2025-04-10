@@ -23,15 +23,26 @@
             ],
         },
         {
-            "name": "train iql",
+            "name": "train",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/scripts/train_iql.py",
+            "program": "${workspaceFolder}/scripts/train.py",
             "console": "integratedTerminal",
             "justMyCode": false,
             "args": [
-                "--config-name=iql_random.yaml",
+                "--config-name=random.yaml",
                 "++logging.mode=offline"
+            ],
+        },
+        {
+            "name": "eval",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/scripts/eval.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "--checkpoint=/home/andrinbuerli/Documents/workspace/offline-rl/offline-rl/outputs/2025-04-10/09-15-39/actor_PointMaze_Open-v3_latest.pth"
             ],
         },
     ]

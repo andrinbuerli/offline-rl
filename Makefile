@@ -20,6 +20,30 @@ DIR :=
 
 FILE := 
 
+###########################
+# Train
+###########################
+
+train: ##@Train train the iql model
+	@echo "Training the iql model..."
+	@if [ -n "$(FILE)" ]; then \
+		WANDB_API_KEY=$(shell cat .wandbkey) $(VENV)/python scripts/train.py --config-name $(FILE) $(PARAMS); \
+	else \
+		WANDB_API_KEY=$(shell cat .wandbkey) $(VENV)/python scripts/train.py $(PARAMS); \
+	fi
+
+
+###########################
+# Eval
+###########################
+
+eval: ##@Train train the iql model
+	@echo "Evaluating the iql model..."
+	@if [ -n "$(FILE)" ]; then \
+		WANDB_API_KEY=$(shell cat .wandbkey) $(VENV)/python scripts/eval.py --config-name $(FILE) $(PARAMS); \
+	else \
+		WANDB_API_KEY=$(shell cat .wandbkey) $(VENV)/python scripts/eval.py $(PARAMS); \
+	fi
 
 ###########################
 # Data
@@ -27,13 +51,17 @@ FILE :=
 
 generate_dataset: ##@Data generate dataset
 	@echo "Generating dataset..."
-	$(VENV)/python scripts/generate_dataset.py --config-name $(FILE) $(PARAMS)
+	@if [ -n "$(FILE)" ]; then \
+		$(VENV)/python scripts/generate_dataset.py --config-name $(FILE) $(PARAMS); \
+	else \
+		$(VENV)/python scripts/generate_dataset.py $(PARAMS); \
+	fi
 
 ###########################
 # Project UTILS
 ###########################
 ls_data: ##@Utils list local data
-	ls -l -a $(DATA_PATH)
+	minari list local
 
 setup: ##@Utils setup python virtual environment and install requirements with uv
 	rm -rf .venv
@@ -45,6 +73,7 @@ print_env: ##@Utils print environment variables
 	@echo "export DIR=$(DIR)"
 	@echo "export FILE=$(FILE)"
 	@echo "export PARAMS=$(PARAMS)"
+	@echo "export WANDB_API_KEY=$(shell cat .wandbkey)"
 	
 x11: ##@Utils export display to local machine for X11 forwarding
 	@LOCAL_MACHINE_IP_ADDRESS=$(shell echo $$SSH_CLIENT | awk '{print $$1}'); \

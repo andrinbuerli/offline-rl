@@ -7,8 +7,6 @@ Install GNU make: https://www.gnu.org/software/make/.
 
 Make sure that the default python interpreter is python >=3.10.
 
-Create file  `.eskey` and paste ElasticSearch API key into it.
-
 Setup env with
 ```
 make setup

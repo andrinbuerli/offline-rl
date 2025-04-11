@@ -16,6 +16,8 @@ The data is collected from the [PointMaze](https://robotics.farama.org/envs/maze
 
 ## Results
 
+The hyperparameters for the following results where obtained by running a hyperparameter sweep on the IQL algorithm using PointMaze_Open-v3 (episode=500) with the 100k random uniform dataset. The results are averaged over 10 episodes with consistent initialization.
+
 ### PointMaze_Open-v3 (episode=500)
 
 | Algorithm | Dataset Size | Dataset Sampling | Eval Reward |
@@ -35,6 +37,8 @@ We can see that the random uniform baseline achieves a cummulative reward of 0.1
 
 ### PointMaze_Medium-v3 (episode=500)
 
+Now we reused the _same_ hyperparameters but increased the difficulty of the environment by changing the maze to a medium size.
+
 | Algorithm | Dataset Size | Dataset Sampling | Eval Reward |
 | --------- | ----- | ----- | ----- |
 | Uniform Random | - | - |  0.1 |
@@ -43,14 +47,19 @@ We can see that the random uniform baseline achieves a cummulative reward of 0.1
 | IQL | 10M | Uniform Random | 2.4 |
 | IQL | 1M | PD Controller | 2.7 |
 
+We can see that the max reward dropped significantly to 2.4 with 10M steps, 2.3 with 1M and 0.1 with 100k steps. But still the agent is able to find a path to the goal.
+
 
 #### Renderings
+When closely inspecting the renderings we can see that the agent sometimes struggles with the walls and gets stuck in a local minima. This is likely because the agent struggles with long term planning which is required due to the reward function.
+
 | Uniform Random | IQL 100k | IQL 1M |
 | ----------- | --------- | ----- |
 | <img src="assets/PointMaze_Medium_random_uniform.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Medium_IQL_100k.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Medium_IQL_1M.gif" alt="Demo" width="200"/> |
 
 
 ### PointMaze_Large-v3 (episode=500)
+To push the limits of the algorithm we increased the difficulty of the environment by changing the maze to a large size. We reused the _same_ hyperparameters as before.
 
 | Algorithm | Dataset Size | Dataset Sampling | Eval Reward |
 | --------- | ----- | ----- | ----- |
@@ -60,11 +69,27 @@ We can see that the random uniform baseline achieves a cummulative reward of 0.1
 | IQL | 10M | Uniform Random | 0.4 |
 | IQL | 1M | PD Controller | 0.1 |
 
+Because of the bad results, a new hyperparameter sweep was performed on the IQL algorithm using PointMaze_Large-v3 (episode=500) with the 1M random uniform dataset. Here the new results using the new hyperparameters:
+
+| Algorithm | Dataset Size | Dataset Sampling | Eval Reward |
+| --------- | ----- | ----- | ----- |
+| Uniform Random | - | - |  TBD |
+| IQL | 100k | Uniform Random | TBD |
+| IQL | 1M | Uniform Random |  TBD |
+| IQL | 10M | Uniform Random | TBD |
+| IQL | 1M | PD Controller | TBD |
+
+
 
 #### Renderings
-| Uniform Random | IQL 100k | IQL 1M |
-| ----------- | --------- | ----- |
-| <img src="assets/PointMaze_Large_random_uniform.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_100k.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_1M.gif" alt="Demo" width="200"/> |
+Now the issues with the agent are very obvious in all cases. The agent is not able to find a path to the in most cases goal and gets stuck in local minima.
+
+|Hyperparameters | Uniform Random | IQL 100k | IQL 1M |
+| -- | ----------- | --------- | ----- |
+| Reused | <img src="assets/PointMaze_Large_random_uniform.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_100k.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_1M.gif" alt="Demo" width="200"/> |
+| Rerun | | | |
+
+
 
 ## Setup
 Install GNU make: https://www.gnu.org/software/make/.

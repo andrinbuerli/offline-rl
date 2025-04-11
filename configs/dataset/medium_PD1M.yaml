@@ -1,4 +1,4 @@
-id: D4RL/pointmaze/open-v2
+id: D4RL/pointmaze/medium-v2
 total_steps: 1_000_000
 algorithm_name: PD
 download: true

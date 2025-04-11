@@ -5,7 +5,7 @@ lr: 0.0003458290868404856
 weight_decay: 0.0002767242360387497
 grad_norm_clip: 0.1
 log_every: 300
-eval_every: 2_000
+eval_every: 5_000
 use_scheduler: true
 
 max_episode_steps: 500

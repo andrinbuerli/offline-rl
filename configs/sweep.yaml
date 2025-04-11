@@ -13,6 +13,11 @@ command:
   - ${args_no_hyphens}
 
 parameters:
+  env:
+    value: pointmaze_large
+  dataset:
+    value: large_random1M
+
   train.lr:
     distribution: log_uniform_values
     min: 1e-5

@@ -1,0 +1,8 @@
+id:
+  - pointmaze_large_random-v2
+  - D4RL/pointmaze/large-v2
+total_steps: 2_000_000
+algorithm_name: random_PD
+download: true
+load_bsize: 1
+max_steps_per_episode: 500

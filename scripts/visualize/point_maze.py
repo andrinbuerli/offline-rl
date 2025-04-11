@@ -19,9 +19,13 @@ def main():
     dataset = minari.load_dataset(args.dataset_id)
     print(f"Loaded dataset '{args.dataset_id}' with {len(dataset)} episodes.")
 
-    fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+    fig, axes = plt.subplots(1, 2, figsize=(16, 8), sharex=True, sharey=True)
     max_trajectories = args.max_trajectories or len(dataset)
-
+    
+    if max_trajectories < len(dataset):
+        sampled_indices = np.random.choice(len(dataset), max_trajectories, replace=False)
+        dataset = [dataset[i] for i in sampled_indices]
+        
     for i, episode in enumerate(dataset):
         obs = episode.observations
         infos = episode.infos
@@ -45,14 +49,12 @@ def main():
     axes[0].set_title("Trajectories")
     axes[0].set_xlabel("x")
     axes[0].set_ylabel("y")
-    axes[0].axis("equal")
     axes[0].grid(True)
 
     # Configure subplot for goals
     axes[1].set_title("Goals")
     axes[1].set_xlabel("x")
     axes[1].set_ylabel("y")
-    axes[1].axis("equal")
     axes[1].grid(True)
 
     # Add legends if the number of trajectories is small
@@ -65,7 +67,6 @@ def main():
     plt.title(f"Trajectories and Goals from {args.dataset_id}")
     plt.xlabel("x")
     plt.ylabel("y")
-    plt.axis("equal")
     plt.grid(True)
     plt.tight_layout()
 

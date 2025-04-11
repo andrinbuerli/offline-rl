@@ -8,13 +8,13 @@ import hydra
 import minari
 import numpy as np
 import torch
-import wandb
 from omegaconf import DictConfig, OmegaConf
 from torchrl.envs import DoubleToFloat, TransformedEnv
 from torchrl.envs.libs.gym import GymEnv
 from torchrl.objectives import IQLLoss, SoftUpdate
 from tqdm.auto import tqdm
 
+import wandb
 from offline_rl.nn.iql import IQLNetwork
 from offline_rl.replay_buffer import LocalMinariReplayBuffer
 
@@ -38,8 +38,8 @@ def main(cfg: DictConfig):
     wandb.init(entity="andi-mueller-csem-sa", project="offline-rl", mode=cfg.logging.mode, config=OmegaConf.to_container(cfg))
 
     # Load dataset and environment
-    dataset = minari.load_dataset(cfg.dataset.id)
-    buffer = LocalMinariReplayBuffer(dataset, max_size=cfg.train.replay_buffer_size)
+    dataset = minari.load_dataset(cfg.dataset.id, download=cfg.dataset.get("download", False))
+    buffer = LocalMinariReplayBuffer(dataset, max_size=cfg.train.replay_buffer_size, load_bsize=cfg.dataset.get("load_bsize", 32))
     
     print(f"Loaded dataset '{cfg.dataset.id}' with {len(dataset)} episodes.")
     print(f"Buffer size: {len(buffer)}")

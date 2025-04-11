@@ -1,6 +1,6 @@
 defaults:
   - env: pointmaze_open
-  - dataset: random100k
+  - dataset: open_random100k
   - model: dense_iql
   - train: default
   - logging: wandb

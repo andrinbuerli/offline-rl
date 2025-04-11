@@ -1,9 +1,9 @@
 num_training_steps: 100_000
 replay_buffer_size: 100_000
-batch_size: 1024
-lr: 1.0e-3
-weight_decay: 1.0e-5
-grad_norm_clip: 1000.0
+batch_size: 256
+lr: 0.0003458290868404856
+weight_decay: 0.0002767242360387497
+grad_norm_clip: 0.1
 log_every: 300
 eval_every: 2_000
 use_scheduler: true

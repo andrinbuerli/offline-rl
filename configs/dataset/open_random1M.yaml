@@ -1,0 +1,3 @@
+id: pointmaze_open_random-v3
+total_steps: 1_000_000
+algorithm_name: random

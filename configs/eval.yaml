@@ -1,3 +1,6 @@
-seed: 42
-env_id: "PointMaze_Open-v3"
+defaults:
+  - env: pointmaze_open
+  - model: dense_iql
+  - eval: default
 
+seed: 42

@@ -2,6 +2,7 @@ outputs/
 data/
 .venv/ 
 plots/
+wandb/
 .wandbkey
 
 policy_*

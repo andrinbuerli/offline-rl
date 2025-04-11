@@ -18,7 +18,7 @@ from tqdm import tqdm
 )
 def main(cfg: DictConfig):
     # Create environment
-    env = gym.make(cfg.env.id, continuing_task=cfg.env.continuing_task, reset_target=cfg.env.reset_target, max_episode_steps=cfg.env.max_steps_per_episode)
+    env = gym.make(cfg.env.id, continuing_task=cfg.env.continuing_task, reset_target=cfg.env.reset_target, max_episode_steps=cfg.dataset.max_steps_per_episode)
 
     total_steps = 0
 
@@ -37,7 +37,7 @@ def main(cfg: DictConfig):
         done = False
         episode_steps = 0
 
-        while not done and episode_steps < cfg.env.max_steps_per_episode:
+        while not done and episode_steps < cfg.dataset.max_steps_per_episode:
             if cfg.dataset.algorithm_name == "random":
                 action = env.action_space.sample()
             else:

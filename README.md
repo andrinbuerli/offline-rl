@@ -18,7 +18,7 @@ We can see that the random uniform baseline achieves a cummulative reward of 0.1
 show mp4s next to each other
 | Uniform Random | IQL 100k | IQL 1M |
 | ----------- | --------- | ----- |
-| <img src="videos/PointMaze_Open_random_uniform.gif" alt="Demo" width="300"/> | <img src="videos/PointMaze_Open_IQL_100k.gif" alt="Demo" width="300"/> | <img src="videos/PointMaze_Open_IQL_1M.gif" alt="Demo" width="300"/> |
+| <img src="videos/PointMaze_Open_random_uniform.gif" alt="Demo" width="200"/> | <img src="videos/PointMaze_Open_IQL_100k.gif" alt="Demo" width="200"/> | <img src="videos/PointMaze_Open_IQL_1M.gif" alt="Demo" width="200"/> |
  
 
 ## Setup

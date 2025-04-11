@@ -45,6 +45,13 @@ def collate_minari_databatch(batch):
 class LocalMinariReplayBuffer(ReplayBuffer):
     def __init__(self, dataset, max_size=1000000, load_bsize=32):
         super().__init__(storage=LazyTensorStorage(max_size=max_size))
+        if not isinstance(dataset, list):
+            dataset = [dataset]
+            
+        for ds in dataset:
+            self.load_into_buffer(ds, load_bsize)
+
+    def load_into_buffer(self, dataset, load_bsize):
         self.dataset = dataset
         dataloader = DataLoader(
             dataset,

@@ -2,6 +2,7 @@
 
 
 from pathlib import Path
+from typing import Iterable
 
 import gymnasium_robotics  # pylint: disable=unused-import
 import hydra
@@ -25,8 +26,9 @@ def evaluate_policy(env, policy, cfg):
     episode_rewards = []
 
     policy.eval()
-    env.reset(seed=cfg.seed)
+    rng = np.random.default_rng(cfg.seed)
     for _ in range(cfg.train.num_eval_episodes):
+        env.reset(seed=int(rng.uniform(0, int(1e10))))
         eval_td = env.rollout(max_steps=cfg.train.max_episode_steps, policy=policy, auto_cast_to_device=True)
         episode_rewards.append(eval_td["next", "reward"].sum().item())
     policy.train()
@@ -38,13 +40,21 @@ def main(cfg: DictConfig):
     wandb.init(entity="andi-mueller-csem-sa", project="offline-rl", mode=cfg.logging.mode, config=OmegaConf.to_container(cfg))
 
     # Load dataset and environment
-    dataset = minari.load_dataset(cfg.dataset.id, download=cfg.dataset.get("download", False))
+    dataset = None
+    if isinstance(cfg.dataset.id, Iterable) and not isinstance(cfg.dataset.id, str):
+        dataset = [
+            minari.load_dataset(dataset_id, download=cfg.dataset.get("download", False))
+            for dataset_id in cfg.dataset.id
+        ]
+        print(f"Loaded datasets {cfg.dataset.id} with {sum([len(x) for x in dataset])} episodes.")
+    else:        
+        dataset = minari.load_dataset(cfg.dataset.id, download=cfg.dataset.get("download", False))
+        print(f"Loaded dataset '{cfg.dataset.id}' with {len(dataset)} episodes.")
     buffer = LocalMinariReplayBuffer(dataset, max_size=cfg.train.replay_buffer_size, load_bsize=cfg.dataset.get("load_bsize", 32))
     
-    print(f"Loaded dataset '{cfg.dataset.id}' with {len(dataset)} episodes.")
     print(f"Buffer size: {len(buffer)}")
     
-    base_env = GymEnv(cfg.env.id, continuing_task=True, reset_target=True, max_episode_steps=cfg.env.max_steps_per_episode, device=cfg.model.device)
+    base_env = GymEnv(cfg.env.id, continuing_task=True, reset_target=True, max_episode_steps=cfg.dataset.max_steps_per_episode, device=cfg.model.device)
     env = TransformedEnv(base_env, DoubleToFloat())
     env.set_seed(cfg.seed)
 
@@ -90,7 +100,6 @@ def main(cfg: DictConfig):
             cfg.train.grad_norm_clip,
         )
             
-        
         optimizer.step()  # Update V(s), Q(a, s), pi(a|s)
         target_net_updater.step()  # Update the target Q-network
         

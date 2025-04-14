@@ -30,14 +30,14 @@
 - **IQL** employs expectile regression and advantage-weighted behavior cloning, avoiding explicit policy optimization.
 - Offers stability and effectiveness in various tasks, including AntMaze.
 
-![alt text](image-7.png)
+![alt text](image-8.png)
 
 ### Conservative Q-Learning (CQL)
  - Addresses the distributional shift by penalizing Q-values for actions not present in the dataset. This encourages conservative estimates to mitigate overestimation.
 - **CQL** penalizes Q-values for actions not present in the dataset, promoting conservative estimates to mitigate overestimation.
 - Demonstrates strong performance on benchmarks like AntMaze by avoiding risky extrapolations.
 
-![alt text](image-5.png)
+![alt text](image-9.png)
 
 ### Decision Transformer (DT) & Trajectory Transformer (TT)
 

@@ -16,18 +16,28 @@
 
 - **Offline RL** focuses on learning policies from a fixed dataset without further environment interaction, addressing scenarios where data collection is expensive or risky.
 - Challenges include distributional shift and extrapolation errors when the learned policy encounters states or actions not well-represented in the dataset.
+ - Good summary: https://www.youtube.com/watch?v=k08N5a0gG0A
+
+### Distributional Shift
+ - Lets say we fit a Q-function $y(x)$ which actually is not too bad (blue curve) to the true Q-function (green curve) using offline data. The fit will be bad for the regions where there is no data. If we now run inference we want to $\max_{a} y(x,a)$ which will actually return adversarial actions for the regions where we have no data. 
+
+![alt text](image-6.png)
 
 ## 🛠️ Key Algorithms
 
-### Conservative Q-Learning (CQL)
+### Implicit Q-Learning (IQL)
+- Addresses the distributional shift by avoiding to ever evaluating the Q-function in the regions where we have no data. IQL is basically reweighted imitation learning.  
+- **IQL** employs expectile regression and advantage-weighted behavior cloning, avoiding explicit policy optimization.
+- Offers stability and effectiveness in various tasks, including AntMaze.
 
+![alt text](image-7.png)
+
+### Conservative Q-Learning (CQL)
+ - Addresses the distributional shift by penalizing Q-values for actions not present in the dataset. This encourages conservative estimates to mitigate overestimation.
 - **CQL** penalizes Q-values for actions not present in the dataset, promoting conservative estimates to mitigate overestimation.
 - Demonstrates strong performance on benchmarks like AntMaze by avoiding risky extrapolations.
 
-### Implicit Q-Learning (IQL)
-
-- **IQL** employs expectile regression and advantage-weighted behavior cloning, avoiding explicit policy optimization.
-- Offers stability and effectiveness in various tasks, including AntMaze.
+![alt text](image-5.png)
 
 ### Decision Transformer (DT) & Trajectory Transformer (TT)
 
@@ -58,6 +68,8 @@
 - Trained entirely offline, π₀ serves as a foundation policy that can be fine-tuned for new tasks, analogous to GPT in NLP.
 
 ![alt text](image.png)
+
+- Recent SOTA talk by S. Levine: https://www.youtube.com/watch?v=EYLdC3a0NHw 
 
 ## 🧪 Benchmarks: AntMaze
 

@@ -2,6 +2,7 @@
 
 This repository contains the code to train optimal policies from random trajectories using offline reinforcement learning.
 
+For a brief overview see the [offline-rl-summary](assets/offline-rl-summary.md) document.
 
 ## Datasets
 

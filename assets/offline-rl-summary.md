@@ -37,8 +37,8 @@
 
 ## ⚠️ Distributional Shift
 
-- Let's say we fit a Q-function \( y(x) \), which is a good approximation (blue curve) to the true Q-function (green curve) using offline data. The fit will be bad in regions without data.
-- During inference, \( \max_a y(x,a) \) may select adversarial actions in those unseen regions.
+- Let's say we fit a Q-function $y(x) $, which is a good approximation (blue curve) to the true Q-function (green curve) using offline data. The fit will be bad in regions without data.
+- During inference, $\max_a y(x,a) $ may select adversarial actions in those unseen regions.
 
 ![alt text](image-4.png)
 

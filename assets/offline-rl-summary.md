@@ -16,81 +16,120 @@
 
 - **Offline RL** focuses on learning policies from a fixed dataset without further environment interaction, addressing scenarios where data collection is expensive or risky.
 - Challenges include distributional shift and extrapolation errors when the learned policy encounters states or actions not well-represented in the dataset.
- - Good summary: https://www.youtube.com/watch?v=k08N5a0gG0A
 
-### Distributional Shift
- - Lets say we fit a Q-function $y(x)$ which actually is not too bad (blue curve) to the true Q-function (green curve) using offline data. The fit will be bad for the regions where there is no data. If we now run inference we want to $\max_{a} y(x,a)$ which will actually return adversarial actions for the regions where we have no data. 
-
-![alt text](image-6.png)
-
-## 🛠️ Key Algorithms
-
-### Implicit Q-Learning (IQL)
-- Addresses the distributional shift by avoiding to ever evaluating the Q-function in the regions where we have no data. IQL is basically reweighted imitation learning.  
-- **IQL** employs expectile regression and advantage-weighted behavior cloning, avoiding explicit policy optimization.
-- Offers stability and effectiveness in various tasks, including AntMaze.
-
-![alt text](image-8.png)
-
-### Conservative Q-Learning (CQL)
- - Addresses the distributional shift by penalizing Q-values for actions not present in the dataset. This encourages conservative estimates to mitigate overestimation.
-- **CQL** penalizes Q-values for actions not present in the dataset, promoting conservative estimates to mitigate overestimation.
-- Demonstrates strong performance on benchmarks like AntMaze by avoiding risky extrapolations.
-
-![alt text](image-9.png)
-
-### Decision Transformer (DT) & Trajectory Transformer (TT)
-
-- **Decision Transformer (DT)** treats RL as a sequence modeling problem, using transformers to predict actions conditioned on desired returns.
-- **Trajectory Transformer (TT)** models the distribution of trajectories, enabling planning via beam search and bridging model-based planning with generative modeling.
-![alt text](image-3.png)
+---
 
 ## 🤖 Imitation Learning vs. Offline RL
 
-- **Imitation Learning (IL)** directly mimics expert behavior but cannot surpass the demonstrator's performance.
-- **Offline RL** can outperform the behavior policy by identifying and recombining high-reward trajectory segments.
-![alt text](image-2.png)
+- **Imitation Learning (IL)** directly mimics expert behavior but cannot outperform it — it lacks reward optimization.
+- **Offline RL** can discover higher-return behavior by combining segments from different demonstrations.
+
+![IL vs RL diagram](image-2.png)
+
+---
 
 ## 🧩 Trajectory Composition
 
-- Offline RL's ability to "stitch" together parts of suboptimal trajectories allows agents to achieve high-return outcomes not present in any single demonstration.
+- A key strength of offline RL is **stitching**: combining parts of suboptimal trajectories into new, higher-return paths.
+- This enables solving tasks that are not solved by any single demonstration.
 
-## 🦿 RT-1 & RT-2
+---
 
-- **RT-1** is trained on extensive robot demonstrations to perform diverse tasks using vision and instructions.
-- **RT-2** enhances RT-1 by integrating Vision-Language Models (VLMs), improving generalization to unseen tasks.
-![alt text](image-1.png)
+## ⚠️ Distributional Shift
+
+- Let's say we fit a Q-function \( y(x) \), which is a good approximation (blue curve) to the true Q-function (green curve) using offline data. The fit will be bad in regions without data.
+- During inference, \( \max_a y(x,a) \) may select adversarial actions in those unseen regions.
+
+![alt text](image-4.png)
+
+---
+
+## 🛠️ Solutions to Distributional Shift
+
+### Implicit Q-Learning (IQL)
+
+- Addresses distributional shift by **avoiding Q-evaluation in unsupported regions**.
+- Based on **expectile regression** and **advantage-weighted behavior cloning** — essentially reweighted imitation learning.
+- Stable, performant on tasks like AntMaze.
+
+![IQL diagram](image-8.png)
+
+---
+
+### Conservative Q-Learning (CQL)
+
+- Tackles distributional shift by **penalizing high Q-values for actions not present in the dataset**.
+- Encourages conservative value estimates and avoids overestimation.
+- Demonstrates strong performance on sparse-reward tasks like AntMaze.
+
+![CQL illustration](image-9.png)
+
+---
+
+## 🧠 Sequence Modeling Approaches
+
+### Decision Transformer (DT)
+
+- Treats RL as **sequence modeling**: predicts actions from a history of states and desired return.
+- Trained via supervised learning, not RL — resembles return-conditioned imitation.
+
+### Trajectory Transformer (TT)
+
+- Models full **trajectory distributions** and uses **beam search** at inference to find high-return plans.
+- Closer to model-based RL, with explicit planning in token space.
+
+![DT and TT](image-3.png)
+
+---
+
+## 🤖 Real-World Generalist Models
+
+### RT-1
+
+- Trained on 130k real-world robot demonstrations.
+- Uses vision and language inputs to perform diverse manipulation tasks.
+- Trained fully offline using supervised imitation learning.
+
+### RT-2
+
+- Builds on RT-1 by integrating a **Vision-Language Model (VLM)** trained on web-scale data.
+- Achieves better **zero-shot generalization** to unseen tasks and objects.
+
+![RT-2 diagram](image-1.png)
+
+---
 
 ## 🧠 π₀ Policy
 
-- **π₀** is a generalist policy model trained using VLMs and flow-matching techniques on diverse robot datasets.
-- Operates in a latent action space, enabling multimodal control across various robots and tasks.
-- Trained entirely offline, π₀ serves as a foundation policy that can be fine-tuned for new tasks, analogous to GPT in NLP.
+- A **generalist latent policy** trained with **flow-matching** on diverse multi-robot data.
+- Integrates frozen VLMs to condition on vision and language.
+- Trained offline via imitation, but **can be fine-tuned** for new tasks.
+- Represents a **foundation policy** for robotics, analogous to GPT in NLP.
 
-![alt text](image.png)
+![π₀ diagram](image.png)
 
-- Recent SOTA talk by S. Levine: https://www.youtube.com/watch?v=EYLdC3a0NHw 
+---
 
 ## 🧪 Benchmarks: AntMaze
 
-- **AntMaze** is a benchmark environment used to evaluate the performance of offline RL algorithms, particularly in tasks requiring navigation and goal-reaching behaviors.
+- **AntMaze** is a standard benchmark to evaluate long-horizon, sparse-reward offline RL algorithms.
+- Tasks require composing skills (e.g., go through hallway, then turn, then reach target).
+
+---
 
 ## 📊 Summary Table
 
-## 📊 Updated Summary Table
+| Method               | Training Paradigm | Inference Paradigm         | RL Fine-tuning Compatible | Key Feature                                                   | Uses VLM? |
+|----------------------|-------------------|-----------------------------|----------------------------|----------------------------------------------------------------|-----------|
+| **SAC**              | Online RL         | Model-free                  | ✅                         | Entropy-regularized actor-critic                               | ❌        |
+| **CQL**              | Offline RL        | Model-free                  | ✅                         | Penalizes Q-values for unseen actions                         | ❌        |
+| **IQL**              | Offline RL        | Model-free                  | ✅                         | Expectile regression + advantage-weighted cloning             | ❌        |
+| **Decision Transformer** | Imitation Learning (return-conditioned) | Model-free (seq. decoding) | ⚠️ Limited                | Sequence modeling conditioned on return                       | ❌        |
+| **Trajectory Transformer** | Offline RL     | Model-based (beam search)   | ⚠️ Yes (with planning)      | Planning in token space from trajectory model                 | ❌        |
+| **RT-1 / RT-2**      | Imitation Learning | Model-free                  | ⚠️ Not directly             | Real-world transformer policy from diverse robot demos        | ✅ (RT-2) |
+| **π₀**               | Imitation Learning | Model-free (latent policy)  | ✅                         | Generalist latent policy trained with flow-matching and VLMs  | ✅        |
 
-| Method               | Training Paradigm | Inference Paradigm | RL Fine-tuning Compatible | Key Feature                                                  | Uses VLM? |
-|----------------------|-------------------|---------------------|----------------------------|---------------------------------------------------------------|-----------|
-| **SAC**              | Online RL         | Model-free          | ✅                         | Entropy-regularized actor-critic algorithm                    | ❌        |
-| **CQL**              | Offline RL        | Model-free          | ✅                         | Conservative Q-learning to penalize unseen actions            | ❌        |
-| **IQL**              | Offline RL        | Model-free          | ✅                         | Implicit Q-learning via expectile regression + cloning        | ❌        |
-| **Decision Transformer** | Imitation Learning (Return-conditioned) | Model-free (seq. decoding) | ⚠️ Limited                | Predicts actions with transformers conditioned on return      | ❌        |
-| **Trajectory Transformer** | Offline RL       | Model-based (planning via beam search) | ⚠️ Yes (with planning)       | Models full trajectories and plans sequences via transformer  | ❌        |
-| **RT-1 / RT-2**      | Imitation Learning | Model-free          | ⚠️ Not directly            | Vision-language robot policy trained from demos               | ✅ (RT-2) |
-| **π₀**               | Imitation Learning | Model-free (latent policy) | ✅                         | Generalist latent policy trained via flow matching            | ✅        |
-
-
-
+---
 
 ## 📚 References
 
@@ -102,4 +141,3 @@
 - Brohan, A., et al. (2022). [RT-1: Robotics Transformer for Real-World Control at Scale](https://arxiv.org/abs/2212.06817)
 - Brohan, A., et al. (2023). [RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control](https://arxiv.org/abs/2307.15818)
 - Black, K., et al. (2024). [π₀: A Vision-Language-Action Flow Model for General Robot Control](https://www.physicalintelligence.company/download/pi0.pdf)
-

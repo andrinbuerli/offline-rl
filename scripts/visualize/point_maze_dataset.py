@@ -22,6 +22,16 @@ def main():
     fig, axes = plt.subplots(1, 2, figsize=(16, 8), sharex=True, sharey=True)
     max_trajectories = args.max_trajectories or len(dataset)
     
+    
+    num_episodes = len(dataset)
+    avg_steps = np.mean([len(episode.rewards) for episode in dataset])
+    avg_reward = np.mean([episode.rewards.sum() for episode in dataset])
+    
+    print(f"Number of episodes: {num_episodes}")
+    print(f"Average number of steps per episode: {avg_steps:.2f}")
+    print(f"Average reward per episode: {avg_reward:.2f}")
+    
+    
     if max_trajectories < len(dataset):
         sampled_indices = np.random.choice(len(dataset), max_trajectories, replace=False)
         dataset = [dataset[i] for i in sampled_indices]

@@ -32,7 +32,7 @@ class IQLNetwork(torch.nn.Module):
         # Compose everything into ValueOperator
         value_net = ValueOperator(
             module=mlp_module,
-            in_keys=["observation", "desired_goal"],
+            in_keys=["observation", "desired_goal", "wall_info"] if cfg.use_wall_info else ["observation", "desired_goal"],
             out_keys=["state_value"]
         )
 
@@ -46,7 +46,7 @@ class IQLNetwork(torch.nn.Module):
         
         q_net = ValueOperator(
             module=mlp_module,
-            in_keys=["observation", "desired_goal", "action"],
+            in_keys=["observation", "desired_goal", "wall_info", "action"] if cfg.use_wall_info else ["observation", "desired_goal", "action"],
             out_keys=["state_action_value"]
         )
 
@@ -57,7 +57,7 @@ class IQLNetwork(torch.nn.Module):
                 num_cells=cfg.encoder_layers,
                 activation_class=ACTIVATIONS[cfg.activation_class],
             ),
-            in_keys=["observation", "desired_goal"],
+            in_keys=["observation", "desired_goal", "wall_info"] if cfg.use_wall_info else ["observation", "desired_goal"],
             out_keys=["state_value"]
         )
 

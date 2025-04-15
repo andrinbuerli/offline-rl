@@ -14,9 +14,15 @@ def collate_minari_databatch(batch):
     observations = torch.stack([TensorDict(x.observations) for x in batch])
     observation = observations["observation"].float()
     desired_goal = observations["desired_goal"].float()
+    if "wall_info" in observations:
+        wall_info = observations["wall_info"].float()
+    else:
+        wall_info = None
     
     result["observation"] = observation[:, :-1] # remove the last step
     result["desired_goal"] = desired_goal[:, :-1] # remove the last step
+    if wall_info is not None:
+        result["wall_info"] = wall_info[:, :-1] # remove the last step
         
     # build "next" dict with reward, done, observation
     result["next"] = {}
@@ -29,6 +35,8 @@ def collate_minari_databatch(batch):
     ).unsqueeze(-1)
     result["next"]["observation"] = observation[:, 1:] # remove the first step
     result["next"]["desired_goal"] = desired_goal[:, 1:] # remove the first step
+    if wall_info is not None:
+        result["next"]["wall_info"] = wall_info[:, 1:] # remove the first step
     
     # flatten dim 0/1 (batch, time)
     for key in result:

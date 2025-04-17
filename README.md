@@ -117,4 +117,8 @@ As we could see in some occasions the agent gets stuck in local minima due to th
 
 ![alt text](assets/vector_field.png)
 
-This is most likely due to the fact that the value function is approximated using , it interpolates the value from the other side of the wall, effectively weighting the advantage of an suboptimal action. Because the dataset is collected with uniform random sampling, there actually are such suboptimal actions in the dataset. Which leads the IQL policy objective to weight the value of the suboptimal action higher than the optimal action. 
+This is most likely due to the fact that the value function is approximated using neural networks which are are function approximators and therefore do perform interpolation. Thus the network interpolates the value from the other side of the wall, even though the space is **discontinuous** in that domain. This will lead to a high advantage for an suboptimal and invalid actions. Because the dataset is collected with uniform random sampling, there actually are such suboptimal actions in the dataset, leading the IQL policy objective to weight the value of the suboptimal action higher than the optimal action.
+
+![alt text](assets/vector_field1.png)
+
+This issue might also be related to the problem of reward attribution, in simpler environments where the trajectories are generally shorter, obstacle avoidance does work. Here the dataset was also generated from random trajectories.

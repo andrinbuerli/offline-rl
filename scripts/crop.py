@@ -1,5 +1,6 @@
-from PIL import Image
 import os
+
+from PIL import Image
 
 image_files = [
     "pointmaze_open_random-v2_trajectories.png",
@@ -22,4 +23,4 @@ for filename in image_files:
     with Image.open(path) as img:
         w, h = img.size
         cropped = img.crop((0, 0, int(2 * w / 3), h))
-        cropped.save(os.path.join(output_dir, filename.replace(".png", "_cropped.png")))
+        cropped.save(os.path.join(output_dir, filename))

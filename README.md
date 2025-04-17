@@ -22,7 +22,7 @@ make help
 
 ## Algorithm
 
-The algorithm used in this repository is Implicit Q-Learning from the paper [IQL: Offline Q-Learning via Implicit Q-Learning](https://arxiv.org/abs/2110.06169). Which jointly trains a value and Q function using the following objectives
+The algorithm used in this repository is Implicit Q-Learning from the paper [Offline Q-Learning via Implicit Q-Learning](https://arxiv.org/abs/2110.06169). Which jointly trains a value and Q function using the following objectives
 $$
 L_V(\psi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ L_\tau^2(Q_{\hat{\theta}}(s, a) - V_\psi(s)) \right] \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \\
 L_Q(\theta) = \mathbb{E}_{(s,a,s') \sim \mathcal{D}} \left[ \left( r(s, a) + \gamma V_\psi(s') - Q_\theta(s, a) \right)^2 \right]

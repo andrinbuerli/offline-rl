@@ -1,4 +1,4 @@
-id: pointmaze_open_random-v2
+id: pointmaze_open_random-v3-with-wall
 total_steps: 100_000
 algorithm_name: random
 max_steps_per_episode: 500

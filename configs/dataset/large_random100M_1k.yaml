@@ -1,0 +1,4 @@
+id: pointmaze_large_random-v8
+total_steps: 100_000_000
+algorithm_name: random
+max_steps_per_episode: 1000

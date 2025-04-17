@@ -1,0 +1,4 @@
+id: pointmaze_u_random-v1
+total_steps: 1_000_000
+algorithm_name: random
+max_steps_per_episode: 500

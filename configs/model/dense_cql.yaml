@@ -1,0 +1,14 @@
+device: cuda
+
+encoder_layers: [128, 128]
+activation_class: "relu"
+
+gamma: 0.99
+
+with_lagrange: true
+lagrange_thresh: 5.0
+
+actor_lr: 3.0e-5
+q_lr: 3.0e-4
+
+type: "cql"

@@ -14,9 +14,16 @@ command:
 
 parameters:
   env:
-    value: pointmaze_large
+    value: pointmaze_medium_wall
   dataset:
-    value: large_random1M_5k
+    value: medium_random1M_wall
+  train.num_eval_episodes:
+    value: 50
+  train.eval_every:
+    value: 25000
+
+  model.use_wall_info:
+    values: [true, false]
 
   train.lr:
     distribution: log_uniform_values
@@ -27,11 +34,11 @@ parameters:
     min: 1e-5
     max: 1e-2
 
-  train.num_training_steps:
-    values: [100_000, 1_000_000]
+  # train.num_training_steps:
+  #  values: [100_000, 1_000_000]
 
   train.batch_size:
-    values: [256, 512, 1024, 2048]
+    values: [32, 64, 128, 256, 512, 1024, 2048]
 
   train.grad_norm_clip:
     values: [0.1, 1.0, 10.0, 100.0, 1000.0]
@@ -51,8 +58,8 @@ parameters:
 
   model.temperature:
     distribution: log_uniform_values
-    min: 1e2
-    max: 1e4
+    min: 1.0
+    max: 1e6
 
   model.expectile:
     distribution: uniform

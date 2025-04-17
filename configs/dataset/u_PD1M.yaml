@@ -1,6 +1,6 @@
-id: D4RL/pointmaze/large-v2
+id: D4RL/pointmaze/umaze-v2
 total_steps: 1_000_000
 algorithm_name: PD
 download: true
 load_bsize: 1
-max_steps_per_episode: 1000
+max_steps_per_episode: 500

@@ -6,3 +6,6 @@ activation_class: "relu"
 temperature: 545.0183610931102
 expectile: 0.8873586182076048
 gamma: 0.9866775126288704
+
+type: "iql"
+use_wall_info: false

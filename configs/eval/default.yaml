@@ -1,4 +1,4 @@
 output_file: plots/eval/policy_rollout
-rollout_steps: 1000
+max_steps_per_episode: 500
 num_episodes: 10
 ckpt_path: /home/andrinbuerli/Documents/workspace/offline-rl/offline-rl/outputs/2025-04-11/08-00-54/model_PointMaze_Open-v3_latest.pth

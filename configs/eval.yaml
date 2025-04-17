@@ -1,5 +1,5 @@
 defaults:
-  - env: pointmaze_open
+  - env: pointmaze_large
   - model: dense_iql
   - eval: default
 

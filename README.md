@@ -27,9 +27,9 @@ The data is collected from the [PointMaze](https://robotics.farama.org/envs/maze
 #### Renderings
 | Env | 100k | 1M | PD Controller |
 | --- | ----------- | --------- | ----- |
-| Open | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_open_random-v2_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_open_random-v3_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/D4RL-pointmaze-open-v2-with-wall_trajectories.png" alt="Demo" style="width:150%;"/></div> |
-| Medium | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_medium_random-v1_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_medium_random-v2_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/D4RL-pointmaze-medium-v2-with-wall_trajectories.png" alt="Demo" style="width:150%;"/></div> |
-| Large | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_large_random-v1_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_large_random-v2_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/D4RL-pointmaze-large-v2-with-wall_trajectories.png" alt="Demo" style="width:150%;"/></div> |
+| Open | <img src="assets/cropped/pointmaze_open_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/pointmaze_open_random-v3_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/D4RL-pointmaze-open-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
+| Medium | <img src="assets/cropped/pointmaze_medium_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/pointmaze_medium_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/D4RL-pointmaze-medium-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
+| Large | <img src="assets/cropped/pointmaze_large_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/pointmaze_large_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/D4RL-pointmaze-large-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
 
 
 ## Results

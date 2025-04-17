@@ -3,10 +3,13 @@ import numpy as np
 from gymnasium.spaces import Box
 
 
-def get_wall_info(x, y, maze, grid_width, grid_height, maze_size_scaling):
+def get_wall_info(x, y, maze, grid_width, grid_height, maze_size_scaling, flip_y=False):
     """Check for wall presence in four directions relative to agent position."""
+    
+    y_aligned = grid_height - y if flip_y else y
+    
     grid_x = int(x / maze_size_scaling)
-    grid_y = int(y / maze_size_scaling)
+    grid_y = int(y_aligned / maze_size_scaling)
 
     def is_wall(dx, dy):
         gx, gy = grid_x + dx, grid_y + dy
@@ -22,7 +25,7 @@ def get_wall_info(x, y, maze, grid_width, grid_height, maze_size_scaling):
     return np.array([left, right, up, down], dtype=np.float32)
 
 
-class MazeWallObservationWrapper(gym.ObservationWrapper):
+class MazeWallObservationWrapper(gym.ObservationWrapper, gym.utils.RecordConstructorArgs):
     def __init__(self, env):
         """
         Adds wall info [left, right, up, down] to the observation.
@@ -30,6 +33,7 @@ class MazeWallObservationWrapper(gym.ObservationWrapper):
         Parameters:
         - resolution: size of each maze cell in world units
         """
+        gym.utils.RecordConstructorArgs.__init__(self, env=env)
         super().__init__(env)
         self.maze = np.array(env.unwrapped.maze.maze_map)
         self.x_map_center = self.env.unwrapped.maze.x_map_center
@@ -51,16 +55,17 @@ class MazeWallObservationWrapper(gym.ObservationWrapper):
             raise TypeError("Only supports Box observation spaces.")
 
     def observation(self, obs):
+        obs_dict = obs.copy()
         agent_x, agent_y = obs["observation"][0], obs["observation"][1]
         #agent_x = self.grid_width - (agent_x + self.x_map_center)
         agent_x = agent_x + self.x_map_center
         #agent_y = self.grid_height - (agent_y + self.y_map_center)
         agent_y = agent_y + self.y_map_center
-        wall_info = self.get_wall_info(agent_x, agent_y)
-        obs_dict = obs.copy()
+        is_medium = self.spec.id.__contains__("Medium") ## somehow the Medium is not flipped, others (e.g. umaze) are flipped, REALLY strange
+        wall_info = self.get_wall_info(agent_x, agent_y, flip=not is_medium)
         obs_dict['wall_info'] = wall_info
         return obs_dict
     
-    def get_wall_info(self, x, y):
+    def get_wall_info(self, x, y, flip=False):
         """Get wall info for a given position."""
-        return get_wall_info(x, y, self.maze, self.grid_width, self.grid_height, self.maze_size_scaling)
+        return get_wall_info(x, y, self.maze, self.grid_width, self.grid_height, self.maze_size_scaling, flip_y=flip)

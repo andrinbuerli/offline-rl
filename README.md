@@ -11,9 +11,9 @@ The data is collected from the [PointMaze](https://robotics.farama.org/envs/maze
 #### Renderings
 | Env | 100k | 1M | PD Controller |
 | --- | ----------- | --------- | ----- |
-| Open | <img src="assets/pointmaze_open_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_open_random-v3_trajectories.png" alt="Demo" width="250"/> | <img src="assets/open-v2_trajectories.png" alt="Demo" width="250"/> |
-| Medium | <img src="assets/pointmaze_medium_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_medium_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/medium-v2_trajectories.png" alt="Demo" width="250"/> |
-| Large | <img src="assets/pointmaze_large_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_large_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/large-v2_trajectories.png" alt="Demo" width="250"/> |
+| Open | <img src="assets/pointmaze_open_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_open_random-v3_trajectories.png" alt="Demo" width="250"/> | <img src="assets/D4RL-pointmaze-open-v2-with-wall_trajectories" alt="Demo" width="250"/> |
+| Medium | <img src="assets/pointmaze_medium_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_medium_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/D4RL-pointmaze-medium-v2-with-wall_trajectories" alt="Demo" width="250"/> |
+| Large | <img src="assets/pointmaze_large_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_large_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/D4RL-pointmaze-large-v2-with-wall_trajectories" alt="Demo" width="250"/> |
 
 ## Results
 
@@ -85,11 +85,27 @@ Because of the bad results, a new hyperparameter sweep was performed on the IQL 
 #### Renderings
 Now the issues with the agent are very obvious in all cases. The agent is not able to find a path to the in most cases goal and gets stuck in local minima.
 
-|Hyperparameters | Uniform Random | IQL 100k | IQL 1M |
-| -- | ----------- | --------- | ----- |
-| Reused | <img src="assets/PointMaze_Large_random_uniform.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_100k.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_1M.gif" alt="Demo" width="200"/> |
-| Rerun | | | |
+| Uniform Random | IQL 100k | IQL 1M |
+| ----------- | --------- | ----- |
+| <img src="assets/PointMaze_Large_random_uniform.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_100k.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Large_IQL_1M.gif" alt="Demo" width="200"/> |
 
+
+## Issues with discontinuities
+
+As we could see in some occasions the agent gets stuck in local minima due to the discontinuities in the environment which are not properly reflected in the value function and policy. 
+
+In the figure bellow we can see this well where the agent can reach the target destination from every point in the maze except the upper right corner where it would have needed to go around the corner.
+
+![alt text](assets/vector_field.png)
+
+But because the value function is continuous, it interpolates the value from the other side of the wall, effectively weighting the advantage of an suboptimal action. Because the dataset is collected with uniform random sampling, there actually are such suboptimal actions in the dataset. Which leads the IQL policy objective
+
+$$
+L_{\pi}(\phi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ e^{\beta \left( Q_{\theta}(s,a) - V_{\phi}(s) \right)} \log \pi_{\phi}(a \mid s) \right]\ ,
+
+$$
+
+to weight the value of the suboptimal action higher than the optimal action. 
 
 
 ## Setup

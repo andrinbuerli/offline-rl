@@ -16,6 +16,7 @@ dependencies = [
     "matplotlib>=3.9.4",
     "minari[all]>=0.5.2",
     "mujoco>=3.1.6",
+    "pytest>=8.3.5",
     "tensordict>=0.5.0",
     "torch>=2.4.1",
     "torchrl>=0.5.0",

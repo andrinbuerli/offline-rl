@@ -10,6 +10,8 @@ from minari import DataCollector
 from omegaconf import DictConfig
 from tqdm import tqdm
 
+import offline_rl  # pylint: disable=unused-import
+
 
 @hydra.main(
     config_path=str((Path(__file__).parent.parent / "configs").resolve()),

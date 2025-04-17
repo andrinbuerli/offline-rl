@@ -27,7 +27,7 @@ $$
 L_V(\psi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ L_\tau^2(Q_{\hat{\theta}}(s, a) - V_\psi(s)) \right] \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \\
 L_Q(\theta) = \mathbb{E}_{(s,a,s') \sim \mathcal{D}} \left[ \left( r(s, a) + \gamma V_\psi(s') - Q_\theta(s, a) \right)^2 \right]
 $$
-and then trains a policy using a reweighted behavior cloning objective
+where $V_\psi(s)$ estimates the expectile ($\tau$) of the state value function, an estimate of the maximum Q-value over actions that are in the support of the dataset distribution. At the same time, IQL trains a policy using a advantage-weighted behavior cloning objective
 $$
 L_\pi(\phi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ e^{\beta (Q_{\hat{\theta}}(s, a) - V_\psi(s))} \log \pi_\phi(a \mid s) \right]
 $$

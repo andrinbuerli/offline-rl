@@ -26,7 +26,7 @@ class ConcatenateObsGoal(torch.nn.Module):
 
 def load_policy(cfg: DictConfig):
     # Build environment
-    env = GymEnv(cfg.env.id, continuing_task=True, reset_target=True, max_episode_steps=500, device=cfg.model.device, render_mode="rgb_array")
+    env = GymEnv(cfg.env.id, continuing_task=True, reset_target=True, max_episode_steps=cfg.eval.max_steps_per_episode, device=cfg.model.device, render_mode="rgb_array")
     env = TransformedEnv(env, device=cfg.model.device, transform=DoubleToFloat())
 
     algo =  cfg.model.get("algorithm", "iql")
@@ -70,7 +70,13 @@ def main(cfg: DictConfig):
     frames = []
     tensordict = env.reset(seed=123)
     done = tensordict["done"].item()
-
+    
+    pointmaze_env = env.env.unwrapped
+    _x_map_center = pointmaze_env.maze._x_map_center
+    _y_map_center = pointmaze_env.maze._y_map_center
+    maze_map =  np.array(pointmaze_env.maze._maze_map)
+    maze_width = maze_map.shape[1]
+    maze_height = maze_map.shape[0]
     step = 0
 
     num_episodes = cfg.eval.num_episodes
@@ -108,7 +114,7 @@ def main(cfg: DictConfig):
                 step += 1
                 #print(f"Step {step}: Action: {step_input['action']}, Obs: {tensordict['observation']}, Done: {done}, Terminated: {terminated}, Truncated: {truncated}", end="\r")
             episode += 1
-            print(f"Episode {episode}/{num_episodes} finished after {step} steps")
+            print(f"Episode {episode}/{num_episodes} finished after {step} steps with reward {np.sum(rewards)}")
             env.reset(seed=int(rng.uniform(0, int(1e10))))
             done = False
             
@@ -128,8 +134,8 @@ def main(cfg: DictConfig):
     def update(frame):
         im.set_array(frame)
         return [im]
-
-    ani = animation.FuncAnimation(fig, update, frames=frames, interval=100)
+    # Set the interval to 1 ms for a smoother animation
+    ani = animation.FuncAnimation(fig, update, frames=frames[::2], interval=1)
 
     output_path = Path(cfg.eval.output_file)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -140,12 +146,18 @@ def main(cfg: DictConfig):
         plt.figure(figsize=(8, 8))
         # Convert to numpy arrays
         obs = np.array(observations)
+        
+        obs[:, 0] += _x_map_center
+        obs[:, 1] += _y_map_center
+        
         plt.plot(obs[:, 0], obs[:, 1], label="Trajectory")
         plt.scatter(obs[0, 0], obs[0, 1], color="green", label="Start")
         plt.scatter(obs[-1, 0], obs[-1, 1], color="red", label="End")
-        
+        plt.imshow(maze_map, cmap="gray", alpha=0.5, extent=(0, maze_width, 0, maze_height))   
         # Plot all unique desired goals
         unique_goals = np.unique(np.array(desired_goals), axis=0)
+        unique_goals[:, 0] += _x_map_center
+        unique_goals[:, 1] += _y_map_center
         plt.scatter(unique_goals[:, 0], unique_goals[:, 1], color="blue", marker="*", s=100, label="Desired Goals")
         
         # Plot a circle of radius 0.5 around each desired goal
@@ -165,10 +177,10 @@ def main(cfg: DictConfig):
     
     print(f"✅ Saved trajectory plot as PNG: {output_path.with_suffix('.png')}")
     
-    output_path = output_path.with_suffix(".mp4")
-    ani.save(str(output_path), writer="ffmpeg", fps=30)
+    #output_path = output_path.with_suffix(".mp4")
+    #ani.save(str(output_path), writer="ffmpeg", fps=30)
         
-    print(f"✅ Saved rollout as MP4: {output_path}")
+    #print(f"✅ Saved rollout as MP4: {output_path}")
 
 
 

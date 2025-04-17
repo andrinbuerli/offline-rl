@@ -4,6 +4,22 @@ This repository contains the code to train optimal policies from random trajecto
 
 For a brief overview see the [offline-rl-summary](assets/offline-rl-summary.md) document.
 
+
+## Setup
+Install GNU make: https://www.gnu.org/software/make/.
+
+Make sure that the default python interpreter is python >=3.10.
+
+Setup env with
+```
+make setup
+```
+
+Further inspect CLI using 
+```
+make help
+```
+
 ## Datasets
 
 The data is collected from the [PointMaze](https://robotics.farama.org/envs/maze/point_maze/) environment, which contains an open arena with only perimeter walls. The agent uses a uniform random sampling or a PD controller (fetched from [here](https://minari.farama.org/datasets/D4RL/pointmaze/open-v2/)) to follow a path of waypoints generated with QIteration until it reaches the goal. The task is continuing which means that when the agent reaches the goal the environment generates a new random goal without resetting the location of the agent. The reward function is sparse, only returning a value of 1 if the goal is reached, otherwise 0. To add variance to the collected paths random noise is added to the actions taken by the agent.
@@ -11,9 +27,10 @@ The data is collected from the [PointMaze](https://robotics.farama.org/envs/maze
 #### Renderings
 | Env | 100k | 1M | PD Controller |
 | --- | ----------- | --------- | ----- |
-| Open | <img src="assets/pointmaze_open_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_open_random-v3_trajectories.png" alt="Demo" width="250"/> | <img src="assets/D4RL-pointmaze-open-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
-| Medium | <img src="assets/pointmaze_medium_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_medium_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/D4RL-pointmaze-medium-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
-| Large | <img src="assets/pointmaze_large_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/pointmaze_large_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/D4RL-pointmaze-large-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
+| Open | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_open_random-v2_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_open_random-v3_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/D4RL-pointmaze-open-v2-with-wall_trajectories.png" alt="Demo" style="width:150%;"/></div> |
+| Medium | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_medium_random-v1_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_medium_random-v2_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/D4RL-pointmaze-medium-v2-with-wall_trajectories.png" alt="Demo" style="width:150%;"/></div> |
+| Large | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_large_random-v1_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/pointmaze_large_random-v2_trajectories.png" alt="Demo" style="width:150%;"/></div> | <div style="width:66%; overflow:hidden;"><img src="assets/D4RL-pointmaze-large-v2-with-wall_trajectories.png" alt="Demo" style="width:150%;"/></div> |
+
 
 ## Results
 
@@ -70,16 +87,7 @@ To push the limits of the algorithm we increased the difficulty of the environme
 | IQL | 10M | Uniform Random | 0.4 |
 | IQL | 1M | PD Controller | 0.1 |
 
-Because of the bad results, a new hyperparameter sweep was performed on the IQL algorithm using PointMaze_Large-v3 (episode=500) with the 1M random uniform dataset. Here the new results using the new hyperparameters:
-
-| Algorithm | Dataset Size | Dataset Sampling | Eval Reward |
-| --------- | ----- | ----- | ----- |
-| Uniform Random | - | - |  TBD |
-| IQL | 100k | Uniform Random | TBD |
-| IQL | 1M | Uniform Random |  TBD |
-| IQL | 10M | Uniform Random | TBD |
-| IQL | 1M | PD Controller | TBD |
-
+The result are rather bad with < 1 indicating that the agent is only able to find the path in 4/10 cases.
 
 
 #### Renderings
@@ -102,23 +110,6 @@ But because the value function is continuous, it interpolates the value from the
 
 $$
 L_{\pi}(\phi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ e^{\beta \left( Q_{\theta}(s,a) - V_{\phi}(s) \right)} \log \pi_{\phi}(a \mid s) \right]\ ,
-
 $$
 
 to weight the value of the suboptimal action higher than the optimal action. 
-
-
-## Setup
-Install GNU make: https://www.gnu.org/software/make/.
-
-Make sure that the default python interpreter is python >=3.10.
-
-Setup env with
-```
-make setup
-```
-
-Further inspect CLI using 
-```
-make help
-```

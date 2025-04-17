@@ -20,6 +20,19 @@ Further inspect CLI using
 make help
 ```
 
+## Algorithm
+
+The algorithm used in this repository is Implicit Q-Learning from the paper [IQL: Offline Q-Learning via Implicit Q-Learning](https://arxiv.org/abs/2210.03277). Which jointly trains a value and Q function using the following objectives
+$$
+L_V(\psi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ L_\tau^2(Q_{\hat{\theta}}(s, a) - V_\psi(s)) \right] \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \\
+L_Q(\theta) = \mathbb{E}_{(s,a,s') \sim \mathcal{D}} \left[ \left( r(s, a) + \gamma V_\psi(s') - Q_\theta(s, a) \right)^2 \right]
+$$
+and then trains a policy using a reweighted behavior cloning objective
+$$
+L_\pi(\phi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ e^{\beta (Q_{\hat{\theta}}(s, a) - V_\psi(s))} \log \pi_\phi(a \mid s) \right]
+$$
+where $\beta=0$ recovers the pure behaviour cloning policy. The method is implemented using TorchRL and Minari.
+
 ## Datasets
 
 The data is collected from the [PointMaze](https://robotics.farama.org/envs/maze/point_maze/) environment, which contains an open arena with only perimeter walls. The agent uses a uniform random sampling or a PD controller (fetched from [here](https://minari.farama.org/datasets/D4RL/pointmaze/open-v2/)) to follow a path of waypoints generated with QIteration until it reaches the goal. The task is continuing which means that when the agent reaches the goal the environment generates a new random goal without resetting the location of the agent. The reward function is sparse, only returning a value of 1 if the goal is reached, otherwise 0. To add variance to the collected paths random noise is added to the actions taken by the agent.
@@ -100,16 +113,8 @@ Now the issues with the agent are very obvious in all cases. The agent is not ab
 
 ## Issues with discontinuities
 
-As we could see in some occasions the agent gets stuck in local minima due to the discontinuities in the environment which are not properly reflected in the value function and policy. 
-
-In the figure bellow we can see this well where the agent can reach the target destination from every point in the maze except the upper right corner where it would have needed to go around the corner.
+As we could see in some occasions the agent gets stuck in local minima due to the discontinuities in the environment. In the figure bellow we can see the agent policy plotted over the state space given a constant goal. The agent can reach the target destination from almost every state in the maze except the upper right corner where it would have needed to go around the corner.
 
 ![alt text](assets/vector_field.png)
 
-But because the value function is continuous, it interpolates the value from the other side of the wall, effectively weighting the advantage of an suboptimal action. Because the dataset is collected with uniform random sampling, there actually are such suboptimal actions in the dataset. Which leads the IQL policy objective
-
-$$
-L_{\pi}(\phi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ e^{\beta \left( Q_{\theta}(s,a) - V_{\phi}(s) \right)} \log \pi_{\phi}(a \mid s) \right]\ ,
-$$
-
-to weight the value of the suboptimal action higher than the optimal action. 
+This is most likely due to the fact that the value function is approximated using , it interpolates the value from the other side of the wall, effectively weighting the advantage of an suboptimal action. Because the dataset is collected with uniform random sampling, there actually are such suboptimal actions in the dataset. Which leads the IQL policy objective to weight the value of the suboptimal action higher than the optimal action. 

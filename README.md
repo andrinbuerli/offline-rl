@@ -23,14 +23,14 @@ make help
 ## Algorithm
 
 The algorithm used in this repository is Implicit Q-Learning from the paper [Offline Q-Learning via Implicit Q-Learning](https://arxiv.org/abs/2110.06169). Which jointly trains a value and Q function using the following objectives
-$$
+```math
 L_V(\psi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ L_\tau^2(Q_{\hat{\theta}}(s, a) - V_\psi(s)) \right] \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \\
 L_Q(\theta) = \mathbb{E}_{(s,a,s') \sim \mathcal{D}} \left[ \left( r(s, a) + \gamma V_\psi(s') - Q_\theta(s, a) \right)^2 \right]
-$$
+```
 where $V_\psi(s)$ estimates the expectile ($\tau$) of the state value function, an estimate of the maximum Q-value over actions that are in the support of the dataset distribution. At the same time, IQL trains a policy using a advantage-weighted behavior cloning objective
-$$
+```math
 L_\pi(\phi) = \mathbb{E}_{(s,a) \sim \mathcal{D}} \left[ e^{\beta (Q_{\hat{\theta}}(s, a) - V_\psi(s))} \log \pi_\phi(a \mid s) \right]
-$$
+```
 where $\beta=0$ recovers the pure behaviour cloning policy. The method is implemented using TorchRL and Minari.
 
 ## Datasets

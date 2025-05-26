@@ -5,13 +5,16 @@ from PIL import Image
 image_files = [
     "pointmaze_open_random-v2_trajectories.png",
     "pointmaze_open_random-v3_trajectories.png",
-    "D4RL-pointmaze-open-v2-with-wall_trajectories.png",
+    "D4RL-pointmaze-open-v2_trajectories.png",
+    "pointmaze_u_random-v0_trajectories.png",
+    "pointmaze_u_random-v1_trajectories.png",
+    "D4RL-pointmaze-u-v2_trajectories.png",
     "pointmaze_medium_random-v1_trajectories.png",
     "pointmaze_medium_random-v2_trajectories.png",
-    "D4RL-pointmaze-medium-v2-with-wall_trajectories.png",
+    "D4RL-pointmaze-medium-v2_trajectories.png",
     "pointmaze_large_random-v1_trajectories.png",
     "pointmaze_large_random-v2_trajectories.png",
-    "D4RL-pointmaze-large-v2-with-wall_trajectories.png"
+    "D4RL-pointmaze-large-v2_trajectories.png"
 ]
 
 input_dir = "assets"

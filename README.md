@@ -41,6 +41,7 @@ The data is collected from the [PointMaze](https://robotics.farama.org/envs/maze
 | Env | 100k | 1M | PD Controller |
 | --- | ----------- | --------- | ----- |
 | Open | <img src="assets/cropped/pointmaze_open_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/pointmaze_open_random-v3_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/D4RL-pointmaze-open-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
+| U | <img src="assets/cropped/pointmaze_u_random-v0_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/pointmaze_u_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/D4RL-pointmaze-u-v2_trajectories.png" alt="Demo" width="250"/> |
 | Medium | <img src="assets/cropped/pointmaze_medium_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/pointmaze_medium_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/D4RL-pointmaze-medium-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
 | Large | <img src="assets/cropped/pointmaze_large_random-v1_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/pointmaze_large_random-v2_trajectories.png" alt="Demo" width="250"/> | <img src="assets/cropped/D4RL-pointmaze-large-v2-with-wall_trajectories.png" alt="Demo" width="250"/> |
 
@@ -66,9 +67,27 @@ We can see that the random uniform baseline achieves a cummulative reward of 0.1
 | ----------- | --------- | ----- |
 | <img src="assets/PointMaze_Open_random_uniform.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Open_IQL_100k.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_Open_IQL_1M.gif" alt="Demo" width="200"/> |
 
+### PointMaze_UMaze-v3 (episode=500)
+
+Now we reused the _same_ hyperparameters but increased the difficulty of the environment by changing the maze to a Umaze, effectively introducing some non-boundary hard constraints.
+
+| Algorithm | Dataset Size | Dataset Sampling | Eval Reward |
+| --------- | ----- | ----- | ----- |
+| Uniform Random | - | - |  0.2 |
+| IQL | 100k | Uniform Random | 4.2 |
+| IQL | 1M | Uniform Random | 6.3 |
+| IQL | 1M | PD Controller | 8.0 |
+
+
+#### Renderings
+| Uniform Random | IQL 100k | IQL 1M |
+| ----------- | --------- | ----- |
+| <img src="assets/PointMaze_U_random_uniform.gif" alt="Demo" width="200"/>  | <img src="assets/PointMaze_U_IQL_100k.gif" alt="Demo" width="200"/> | <img src="assets/PointMaze_U_IQL_1M.gif" alt="Demo" width="200"/> |
+
+
 ### PointMaze_Medium-v3 (episode=500)
 
-Now we reused the _same_ hyperparameters but increased the difficulty of the environment by changing the maze to a medium size.
+Again we reused the _same_ hyperparameters but increased the difficulty of the environment by changing the maze to a medium size.
 
 | Algorithm | Dataset Size | Dataset Sampling | Eval Reward |
 | --------- | ----- | ----- | ----- |

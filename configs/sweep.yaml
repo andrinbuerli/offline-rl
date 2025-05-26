@@ -16,7 +16,7 @@ parameters:
   env:
     value: pointmaze_medium_wall
   dataset:
-    value: medium_random1M_wall
+    value: medium_PD1M_wall
   train.num_eval_episodes:
     value: 50
   train.eval_every:

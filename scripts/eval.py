@@ -177,10 +177,12 @@ def main(cfg: DictConfig):
     
     print(f"✅ Saved trajectory plot as PNG: {output_path.with_suffix('.png')}")
     
-    #output_path = output_path.with_suffix(".mp4")
-    #ani.save(str(output_path), writer="ffmpeg", fps=30)
+    if cfg.eval.get("render_video", False):
+        print("Saving rollout as video...")
+        output_path = output_path.with_suffix(f".{cfg.eval.get('video_format', 'mp4')}")
+        ani.save(str(output_path), writer="ffmpeg", fps=30)
         
-    #print(f"✅ Saved rollout as MP4: {output_path}")
+        print(f"✅ Saved rollout as MP4: {output_path}")
 
 
 
